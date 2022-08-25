@@ -1,0 +1,78 @@
+﻿@model IEnumerable<Category>
+
+<a href="/dashboard/category/create" class="btn btn-success btn-icon-split">
+    <span class="icon text-white-50">
+        <i class="fas fa-plus"></i>
+    </span>
+    <span class="text">Create</span>
+</a>
+
+
+
+<div class="row">
+    @foreach (var category in Model)
+    {
+        <div class="col-lg-3">
+            <div class="card shadow my-5">
+                <h3 class="text-center p-2">@category.Name</h3>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between">
+                        <a href="/dashboard/category/create" class="btn btn-warning btn-icon-split">
+                            <span class="icon text-white-50">
+                                <i class="fas fa-pen"></i>
+                            </span>
+                            <span class="text">Update</span>
+                        </a>
+
+                        <button category-val="@category.Id" class="btn btn-danger btn-icon-split btnSave">
+                            <span class="icon text-white-50">
+                                <i class="fas fa-trash"></i>
+                            </span>
+                            <span class="text">Delete</span>
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+
+        $(".btnSave").click(function(e) {
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let catId = e.currentTarget.attributes[0].value
+                    $.ajax({
+                        method: "POST",
+                        url: "category/delete/",
+                        data: {
+                            id: catId
+                        }
+                    })
+                    Swal.fire({
+                        title: 'Deleted',
+                        text: "Category is delete!",
+                        icon: 'success',
+
+                    }).then((result) => {
+                        window.location = "category"
+                    })
+
+                }
+            })
+        })
+    </script>
+}
