@@ -94,15 +94,15 @@
                         <tbody class="checkout-details">
                             <tr>
                                 <td>Subtotal</td>
-                                <td>$190</td>
+                                <td id="subtotal">$190</td>
                             </tr>
                             <tr>
                                 <td>Shipping</td>
-                                <td>$50</td>
+                                <td id="shipping">$50</td>
                             </tr>
                             <tr>
                                 <td>Total</td>
-                                <td>$240</td>
+                                <td id="totalPrice">$240</td>
                             </tr>
                         </tbody>
                     </table>
@@ -144,12 +144,33 @@
 @section Scripts{
     <script>
         let productListTbody = document.getElementById("productList")
+
+        let subtot = document.getElementById("subtotal")
+        let shipping = document.getElementById("shipping")
+        let totalPrice = document.getElementById("totalPrice")
+
         function getCookie(name) {
             const value = `; ${document.cookie}`;
             const parts = value.split(`; ${name}=`);
             if (parts.length === 2) return parts.pop().split(';').shift();
         }
         let cookieList = JSON.parse(getCookie("products"))
+
+
+        let subtotal = cookieList.map(x=> x)
+        let resSubtotal = 0;
+        for(let i = 0; i < subtotal.length; i++){
+            resSubtotal += (subtotal[i].price * 1) * (subtotal[i].quantity * 1)
+        }
+
+        let calShipping = resSubtotal * 0.05;
+        let calResShip = calShipping > 5 ? calShipping.toFixed(2) : 5
+        let calTotal = calResShip * 1 + resSubtotal
+
+        subtot.innerText = `${resSubtotal} ₼`
+        shipping.innerText = `${calResShip} ₼`
+        totalPrice.innerText = `${calTotal} ₼`
+
         let mydiv = `
                     <tr>
                         <td>Product</td>

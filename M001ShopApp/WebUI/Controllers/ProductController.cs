@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebUI.ViewModels;
 
@@ -17,6 +18,8 @@ namespace WebUI.Controllers
         {
             return View();
         }
+
+        [Authorize]
         public IActionResult Detail(int id)
         {
             try
